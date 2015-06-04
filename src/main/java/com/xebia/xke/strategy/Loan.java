@@ -5,31 +5,33 @@ import com.xebia.xke.model.RiskFactor;
 import java.util.Date;
 
 public class Loan {
-    private final CapitalStrategy capitalStrategy;
     private double notional;
     private double outstanding;
     private int rating;
     private Date start;
     private Date expiry;
     private Date maturity;
-
     private static final int MILLIS_PER_DAY = 86400000;
+    private double unusedPercentage;
 
-    public Loan(double notional, int rating, Date start, Date expiry, Date maturity,CapitalStrategy strategy) {
+    public Loan(double notional, int rating, Date start, Date expiry, Date maturity) {
         this.notional = notional;
         this.rating = rating;
         this.start = start;
         this.expiry = expiry;
         this.maturity = maturity;
-        this.capitalStrategy=strategy;
+        setUnusedPercentage();
     }
 
     public double calculateCapital() {
-        return capitalStrategy.calculate(this);
+        return riskAmount() * duration() * RiskFactor.forRiskRating(rating);
     }
 
+    private double calcUnusedRiskAmount() {
+        return (notional - outstanding) * unusedPercentage;
+    }
 
-    public double duration() {
+    private double duration() {
         if (expiry == null)
             return ((maturity.getTime() - start.getTime()) / MILLIS_PER_DAY) / 365;
         else if (maturity == null)
@@ -43,29 +45,30 @@ public class Loan {
         }
     }
 
+    private double riskAmount() {
+        if (unusedPercentage != 1.00)
+            return outstanding + calcUnusedRiskAmount();
+        else
+            return outstanding;
+    }
 
     public void setOutstanding(double newOutstanding) {
         outstanding = newOutstanding;
     }
 
-
-    public int getRating() {
-        return rating;
-    }
-
-    public Date getMaturity() {
-        return maturity;
-    }
-
-    public Date getExpiry() {
-        return expiry;
-    }
-
-    public double getOutstanding() {
-        return outstanding;
-    }
-
-    public double getNotional() {
-        return notional;
+    private void setUnusedPercentage() {
+        if (expiry != null && maturity != null) {
+            if (rating > 4)
+                unusedPercentage = 0.95;
+            else
+                unusedPercentage = 0.50;
+        } else if (maturity != null) {
+            unusedPercentage = 1.00;
+        } else if (expiry != null) {
+            if (rating > 4)
+                unusedPercentage = 0.75;
+            else
+                unusedPercentage = 0.25;
+        }
     }
 }
