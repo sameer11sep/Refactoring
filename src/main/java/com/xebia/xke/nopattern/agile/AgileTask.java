@@ -23,32 +23,40 @@ public class AgileTask {
         if (state.equals(TO_DO) || state.equals(IN_PROGRESS)) {
             this.state = IN_PROGRESS;
             System.out.println("Task moved to "+IN_PROGRESS);
+        }else{
+            error();
         }
-        System.out.println("Task cannot be moved to "+IN_PROGRESS+" from "+state);
+
     }
 
     public void moveToTest(){
         if(state.equals(IN_PROGRESS)){
             state=IN_TEST;
             System.out.println("Task moved to "+IN_TEST);
+        }else{
+            error();
         }
-        System.out.println("Task cannot be moved to "+IN_PROGRESS+" from "+state);
     }
 
     public void reOpen(){
         if(state.equals(DONE)){
             state=TO_DO;
             System.out.println("Task has been reopened");
+        }else{
+            error();
         }
-        System.out.println("Task is still open");
     }
 
     public void done(){
         if(state.equals(IN_PROGRESS)){
             state=DONE;
             System.out.println("Task has been reopened");
+        }else{
+            error();
         }
-        System.out.println("Task is still open");
     }
 
+    private void error() {
+        throw new IllegalStateException("Cannot make the transition from current state");
+    }
 }
