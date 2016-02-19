@@ -8,6 +8,8 @@ public class InProgress extends TaskState {
     @Override
     public void assigned(AgileTask task) {
 //sets the state to in progress
+//also adding another line to see if ranges work
+//another for the above check
         task.setState(TaskState.IN_PROGRESS);
     }
 
