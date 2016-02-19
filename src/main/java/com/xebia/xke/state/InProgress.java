@@ -1,8 +1,5 @@
 package com.xebia.xke.state;
-
-/**
- * Created by sameerarora on 6/5/15.
- */
+//This has been added at the place where code already existed
 public class InProgress extends TaskState {
     public InProgress(String in_progress) {
         super(in_progress);
@@ -10,6 +7,7 @@ public class InProgress extends TaskState {
 
     @Override
     public void assigned(AgileTask task) {
+//sets the state to in progress
         task.setState(TaskState.IN_PROGRESS);
     }
 
