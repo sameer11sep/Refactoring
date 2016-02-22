@@ -3,19 +3,20 @@ package com.xebia.xke.state;
 /**
  * Created by sameerarora on 6/5/15.
  */
+		//screwing up formatting for the file
 public abstract class TaskState {
     private final String name;
 
-    public static final TaskState TO_DO = new ToDo("TODO");
+			    public static final TaskState TO_DO = new ToDo("TODO");
 
     public static final TaskState IN_PROGRESS = new InProgress("IN_PROGRESS");
 
-    public static final TaskState IN_TEST = new InTest("IN_TEST");
+		    public static final TaskState IN_TEST = new InTest("IN_TEST");
 
     public static final TaskState DONE = new Done("DONE");
 
     public TaskState(String todo) {
-        this.name=todo;
+  this.name=todo;
     }
 
     public void assigned(AgileTask task) {
@@ -33,7 +34,8 @@ public abstract class TaskState {
     public void done(AgileTask task) {
         error();
     }
-
+//this is a badly formatted file
+//another  line 
     private void error() {
         throw new IllegalStateException("Cannot make the transition from current state");
     }
