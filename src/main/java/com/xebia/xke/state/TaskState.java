@@ -1,4 +1,4 @@
-kpackage com.xebia.xke.state;
+package com.xebia.xke.state;
 
 /**
  * Created by sameerarora on 6/5/15.
